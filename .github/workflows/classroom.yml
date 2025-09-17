@@ -1,0 +1,55 @@
+name: Java CI with Hidden Tests
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'pom.xml'
+      - '.github/.m2/settings.xml'
+      - '.github/workflows/classroom.yml'
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    if: github.actor != 'github-classroom[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout student code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+          server-id: github
+          server-username: ${{ github.actor }}
+          server-password: ${{ secrets.ORG_ACCESS_TOKEN }}
+
+      - name: Build and test with Maven
+        run: |
+          # Создаем директорию .m2 и копируем настройки
+          mkdir -p ~/.m2
+          cp .github/.m2/settings.xml ~/.m2/settings.xml
+
+          # Запускаем тесты с явным указанием настроек
+          mvn clean test --no-transfer-progress -B --settings ~/.m2/settings.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORG_ACCESS_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: target/surefire-reports/

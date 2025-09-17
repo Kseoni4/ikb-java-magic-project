@@ -35,6 +35,17 @@ jobs:
           server-username: ${{ github.actor }}
           server-password: ${{ secrets.ORG_ACCESS_TOKEN }}
 
+      - name: Add test dependency to pom.xml
+        run: |
+          sed -i '/<\/dependencies>/i \
+              <dependency>\
+                <groupId>ch.kseno</groupId>\
+                <artifactId>magic-tests</artifactId>\
+                <version>1.0.0</version>\
+                <type>test-jar</type>\
+                <scope>test</scope>\
+              </dependency>' pom.xml
+
       - name: Build and test with Maven
         run: |
           # Создаем директорию .m2 и копируем настройки

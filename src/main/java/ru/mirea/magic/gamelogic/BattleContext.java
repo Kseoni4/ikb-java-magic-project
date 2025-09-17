@@ -1,6 +1,9 @@
 package ru.mirea.magic.gamelogic;
 
-import ru.mirea.magic.card.*;
+import ru.mirea.magic.card.Attacker;
+import ru.mirea.magic.card.Blocker;
+import ru.mirea.magic.card.CreatureCard;
+import ru.mirea.magic.card.Damagable;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
-package ru.mirea.ksenofontov.magic.card;
+package ru.mirea.magic.card;
 
 import java.util.List;
-import java.util.Objects;
 
 public class CreatureCard extends Card implements HasAbility, Attacker, Blocker, DamageDealer, Damagable {
     private int power;
@@ -9,18 +8,6 @@ public class CreatureCard extends Card implements HasAbility, Attacker, Blocker,
     private int toughness;
 
     private final List<Ability> abilities;
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        CreatureCard that = (CreatureCard) o;
-        return that.getName().equals(this.getName());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(power, toughness, abilities);
-    }
 
     public CreatureCard(String name,
                         ManaCost manaCost,
@@ -55,7 +42,6 @@ public class CreatureCard extends Card implements HasAbility, Attacker, Blocker,
 
     @Override
     public void attack(CreatureCard target) {
-        System.out.printf("%s атакует %s%n", this.getName(), target.getName());
         this.dealDamage(this.power, target);
     }
 

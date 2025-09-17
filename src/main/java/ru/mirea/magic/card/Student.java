@@ -1,4 +1,4 @@
-package ru.mirea.ksenofontov.magic.card;
+package ru.mirea.magic.card;
 
 public class Student {
     private final String lastName;

@@ -1,6 +1,6 @@
 package ru.mirea.magic;
 
-public class GameLauncher {
+public class MagicLauncher {
     public static void main(String[] args) {
 
     }

@@ -1,4 +1,4 @@
-package ru.mirea.ksenofontov.magic.card;
+package ru.mirea.magic.card;
 
 import java.util.EnumMap;
 import java.util.Map;

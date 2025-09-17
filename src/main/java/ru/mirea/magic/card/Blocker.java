@@ -1,4 +1,4 @@
-package ru.mirea.ksenofontov.magic.card;
+package ru.mirea.magic.card;
 
 public interface Blocker {
     void block(CreatureCard attacker);

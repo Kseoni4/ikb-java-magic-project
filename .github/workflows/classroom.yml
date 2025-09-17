@@ -33,19 +33,12 @@ jobs:
           cache: 'maven'
           server-id: github
           server-username: ${{ github.actor }}
-          server-password: ${{ secrets.ORG_ACCESS_TOKEN }
+          server-password: ${{ secrets.ORG_ACCESS_TOKEN }}
 
       - name: Build and test with Maven
         run: |
-          # Создаем директорию .m2 и копируем настройки
-          mkdir -p ~/.m2
-          cp .github/.m2/settings.xml ~/.m2/settings.xml
-
           # Запускаем тесты с явным указанием настроек
-          mvn clean test --no-transfer-progress -B --settings ~/.m2/settings.xml
-        env:
-          GITHUB_TOKEN: ${{ secrets.ORG_ACCESS_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
+          mvn clean test --no-transfer-progress
 
       - name: Upload test results
         if: always()

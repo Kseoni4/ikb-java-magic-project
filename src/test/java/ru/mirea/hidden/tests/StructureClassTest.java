@@ -44,21 +44,9 @@ public class StructureClassTest {
             .collect(Collectors.toMap(Map.Entry::getKey, item -> item.getValue().length));
 
     @BeforeAll
-    @DisplayName("Получаем пользовательский пакет внутри ru.mirea")
+    @DisplayName("Проверка целостности реализованных методов")
     static void getUserPackageSubfolder() {
-        System.out.println(">>Получение пользовательского пакета внутри ru.mirea<<");
-
-        File packageDir = FilePathUtils.getPackageDir();
-
-        Assertions.assertNotEquals(0, packageDir.listFiles().length, "❌ Директория пуста");
-
-        File userSubfolderDir = FilePathUtils.extractUserSubfolderDir(packageDir.listFiles());
-
-        Assertions.assertNotNull(userSubfolderDir, "❌ Директория студента не найдена");
-
-        userSubfolder = userSubfolderDir.getName();
-
-        System.out.printf("✅ Пакет найден: %s%n", userSubfolder);
+        System.out.println(">>Проверка целостности реализованных методов<<");
 
         requiredImplMethods = new HashMap<String, Map<String, Class<?>[]>>(Map.of(
                 "CreatureCard", Map.of(

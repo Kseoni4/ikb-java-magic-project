@@ -25,7 +25,8 @@ public class FilePathUtils {
         Optional<File> first = Arrays.stream(packageDir)
                 .filter(file -> file.isDirectory() && !file.getName().equals("task")
                         && !file.getName().equals("card")
-                        && !file.getName().equals("gamelogic"))
+                        && !file.getName().equals("gamelogic")
+                        && !file.getName().equals("abilities"))
                 .findFirst();
 
         return first.orElse(null);

@@ -41,7 +41,7 @@ public class CreatureCard extends Card implements HasAbility, Attacker, Blocker,
     }
 
     @Override
-    public void attack(CreatureCard target) {
+    public void attack(Damagable target) {
         this.dealDamage(this.power, target);
     }
 

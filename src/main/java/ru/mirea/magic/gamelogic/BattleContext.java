@@ -24,7 +24,7 @@ public interface BattleContext {
      * @param attacker атакующая в этой фазе карта
      * @param target получающая в этой фазе урон карта
      */
-    void dealDamagePhase(Attacker attacker, Damagable target);
+    void dealDamagePhase(Attacker attacker, CreatureCard target);
 
     /**
      * Фаза блокирования урона от атакуемой карты.

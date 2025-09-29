@@ -3,6 +3,7 @@ package ru.mirea.magic.card;
 import java.util.List;
 
 public class CreatureCard extends Card implements HasAbility, Attacker, Blocker, DamageDealer, Damagable {
+
     private int power;
 
     private int toughness;
@@ -41,7 +42,7 @@ public class CreatureCard extends Card implements HasAbility, Attacker, Blocker,
     }
 
     @Override
-    public void attack(Damagable target) {
+    public void attack(CreatureCard target) {
         this.dealDamage(this.power, target);
     }
 

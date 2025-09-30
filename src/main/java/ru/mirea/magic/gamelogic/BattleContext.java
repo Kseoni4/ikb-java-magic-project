@@ -40,5 +40,4 @@ public interface BattleContext {
      * @return победившее существо, либо null
      */
     CreatureCard checkToughnessPhase(List<CreatureCard> cardList);
-
 }

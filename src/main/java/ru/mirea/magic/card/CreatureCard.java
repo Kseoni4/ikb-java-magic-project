@@ -1,6 +1,7 @@
 package ru.mirea.magic.card;
 
 import java.util.List;
+import java.util.Map;
 
 public class CreatureCard extends Card implements HasAbility, Attacker, Blocker, DamageDealer, Damagable {
 
@@ -8,7 +9,7 @@ public class CreatureCard extends Card implements HasAbility, Attacker, Blocker,
 
     private int toughness;
 
-    private final List<Ability> abilities;
+    private final Map<Class<? extends Ability>, Ability> abilities;
 
     public CreatureCard(String name,
                         ManaCost manaCost,
@@ -17,7 +18,7 @@ public class CreatureCard extends Card implements HasAbility, Attacker, Blocker,
                         String oracleText,
                         int power,
                         int toughness,
-                        List<Ability> abilities) {
+                        Map<Class<? extends Ability>, Ability> abilities) {
         super(name, manaCost, cardType, setTitle, oracleText);
         this.power = power;
         this.toughness = toughness;
@@ -30,6 +31,10 @@ public class CreatureCard extends Card implements HasAbility, Attacker, Blocker,
 
     public int getToughness() {
         return toughness;
+    }
+
+    public void changeToughness(int amount){
+        this.toughness += amount;
     }
 
     @Override
@@ -63,11 +68,11 @@ public class CreatureCard extends Card implements HasAbility, Attacker, Blocker,
 
     @Override
     public List<Ability> getAbilities() {
-        return List.of();
+        return this.abilities.values().stream().toList();
     }
 
     @Override
     public void addAbility(Ability ability) {
-
+        this.abilities.put(ability.getClass(), ability);
     }
 }

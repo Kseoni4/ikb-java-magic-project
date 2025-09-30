@@ -1,17 +1,33 @@
 package ru.mirea.magic.card;
 
-public interface Ability {
+import java.util.Objects;
+
+public abstract class Ability implements AbilityResolving {
+
+    private final String abilityName;
+
+    public String getAbilityName() {
+        return abilityName;
+    }
 
     /**
-     * Разрешает (активирует) способность карты на конкретную цель
-     * @param source карта - владелец способности
-     * @param target целевая карта
+     * Используем для сравнения объектов способностей между собой
+     * @param o объект Ability
+     * @return является ли входной объект той же способностью
      */
-    void resolve(CreatureCard source, CreatureCard target);
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Ability ability = (Ability) o;
+        return Objects.equals(abilityName, ability.abilityName);
+    }
 
-    /**
-     * Разрешает (активирует) способность карты на саму себя
-     * @param target карта - владелец способности
-     */
-    void resolve(CreatureCard target);
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(abilityName);
+    }
+
+    public Ability(String abilityName) {
+        this.abilityName = abilityName;
+    }
 }

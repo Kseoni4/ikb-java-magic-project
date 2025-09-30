@@ -3,7 +3,12 @@ package ru.mirea.magic.abilities;
 import ru.mirea.magic.card.Ability;
 import ru.mirea.magic.card.CreatureCard;
 
-public class TrampleAbility implements Ability {
+public class TrampleAbility extends Ability {
+
+    public TrampleAbility(String abilityName) {
+        super(abilityName);
+    }
+
     @Override
     public void resolve(CreatureCard source, CreatureCard target) {
 

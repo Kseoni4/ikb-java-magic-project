@@ -11,7 +11,17 @@ public interface GameIO {
 
     /**
      * Метод для загрузки ресурсных файлов (из папки Resources)
-     * @param resourceName имя ресурса без указания расширения
+     * Для загрузки нужно использовать метод класса PropertyResourceBundle.getBundle("Путь\к\ресурсу");
+     * Поиск ресурса осуществляется внутри папки src/main/resources по расширению .properties, таким образом
+     * Для поиска ресурса example.properties достаточно передать название example.
+     * Пример поиска ресурса внутри подкаталога resources/game-resources:
+     * {@snippet lang=java :
+     * public ResourceBundle resourceLoad(String resourceName){
+     *     return PropertyResourceBundle.getBundle("game-resources/"+resourceName);
+     * }
+     * }
+     * ResourceBundle это словарь, где ключ это название свойство, а значение - данные написанные после знака '='
+     * @param resourceName имя ресурса <u>без указания</u> расширения properties
      * @return ресурсный пакет
      */
     public ResourceBundle resourceLoad(String resourceName);

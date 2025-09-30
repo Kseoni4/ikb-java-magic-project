@@ -18,6 +18,7 @@ import ru.mirea.magic.card.CreatureCard;
 import ru.mirea.magic.gamelogic.BattleContext;
 import ru.mirea.magic.gamelogic.BattleSystem;
 import ru.mirea.magic.gamelogic.GameEngine;
+import ru.mirea.magic.gamelogic.GameIO;
 
 @Tag("game-logic-tests")
 @DisplayName("Тестирование игрового функционала")
@@ -25,8 +26,13 @@ import ru.mirea.magic.gamelogic.GameEngine;
 public class GameLogicTest {
     private static String userSubfolder;
 
-    private final String[] requiredImplements = new String[]{"GameEngineImpl", "BattleSystemImpl", "BattleContextImpl"};
-
+    private final Map<String, Class<?>[]> requiredImplements =
+            Map.of(
+                    "GameEngineImpl", new Class[]{GameIO.class, BattleSystem.class},
+                    "BattleSystemImpl", new Class[]{BattleContext.class},
+                    "BattleContextImpl", new Class[]{},
+                    "GameIOImpl", new Class[]{}
+            );
     @BeforeAll
     @DisplayName("Получаем пользовательский пакет внутри ru.mirea.magic")
     static void getUserPackageSubfolder() {
@@ -50,9 +56,14 @@ public class GameLogicTest {
     void implementationsExists() {
         System.out.println(">>Проверка наличия реализаций классов<<");
 
-        for (String className : requiredImplements) {
+        for (String className : requiredImplements.keySet()) {
+            System.out.printf("Проверка: %s%n", className);
             Assertions.assertDoesNotThrow(() -> {
-                ReflectionTestUtils.getClass("magic." + userSubfolder, className).getDeclaredConstructor().newInstance();
+                Class<?>[] parameters = requiredImplements.get(className);
+
+                Object[] params = new Object[parameters.length];
+
+                ReflectionTestUtils.getClass("magic." + userSubfolder, className).getDeclaredConstructor(parameters).newInstance(params);
                 System.out.printf("✅Реализация %s найдена%n", className);
             }, "❌ Реализация %s отсутствует".formatted(className));
         }
@@ -61,10 +72,10 @@ public class GameLogicTest {
     @Test
     @Order(2)
     @DisplayName("Проверка создания карты из тестового файла")
-    void createCardTest() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, FileNotFoundException {
+    void createCardTest() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException {
         System.out.println(">>Проверка создания карты из тестового файла<<");
 
-        GameEngine gameEngineImpl = (GameEngine) ReflectionTestUtils.getClass("magic." + userSubfolder, "GameEngineImpl").getDeclaredConstructor().newInstance();
+        GameIO gameIO = (GameIO) ReflectionTestUtils.getClass("magic." + userSubfolder, "GameIOImpl").getDeclaredConstructor().newInstance();
 
         InputStream resourceAsStream = getClass().getResourceAsStream("/test-card.txt");
 
@@ -72,7 +83,7 @@ public class GameLogicTest {
             Assertions.fail("Не найден файл test-card.txt");
         }
 
-        CreatureCard creatureCard = gameEngineImpl.cardLoad("src/test/resources/test-card.txt");
+        CreatureCard creatureCard = gameIO.cardLoad("src/test/resources/test-card.txt");
 
         Assertions.assertNotNull(creatureCard, "❌ Загрузка карты возвращает null");
 
@@ -84,14 +95,14 @@ public class GameLogicTest {
     @Test
     @Order(3)
     @DisplayName("Тестирование контекста битвы")
-    void battleContextTest() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, FileNotFoundException {
+    void battleContextTest() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException {
         BattleContext battleContext = (BattleContext) ReflectionTestUtils.getClass("magic." + userSubfolder, "BattleContextImpl").getDeclaredConstructor().newInstance();
 
-        GameEngine gameEngineImpl = (GameEngine) ReflectionTestUtils.getClass("magic." + userSubfolder, "GameEngineImpl").getDeclaredConstructor().newInstance();
+        GameIO gameIO = (GameIO) ReflectionTestUtils.getClass("magic." + userSubfolder, "GameIOImpl").getDeclaredConstructor().newInstance();
 
-        CreatureCard keenCard = gameEngineImpl.cardLoad("src/test/resources/keen.txt");
+        CreatureCard keenCard = gameIO.cardLoad("src/test/resources/keen.txt");
 
-        CreatureCard davenantCard = gameEngineImpl.cardLoad("src/test/resources/test-card.txt");
+        CreatureCard davenantCard = gameIO.cardLoad("src/test/resources/test-card.txt");
 
         System.out.println(">>Проверка фазы нанесения урона<<");
 

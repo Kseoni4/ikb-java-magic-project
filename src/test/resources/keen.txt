@@ -1,0 +1,7 @@
+Keen-Eared Sentry
+{1}{W}
+Creature — Human Soldier
+-
+-
+2/1
+AFR

@@ -1,5 +1,7 @@
 D'Avenant Healer
 {1}{W}{W}
 Creature — Human Cleric Archer
-TSP
+-
+-
 1/2
+TSP
